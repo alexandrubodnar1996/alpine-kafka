@@ -1,0 +1,28 @@
+---
+version: '2'
+services:
+  broker:
+    image: kafka:1.1.0_01
+    environment:
+      ADVERTISE_PUB_IP: 'false'
+      JVMFLAGS: -Xmx1024m -Xms1024m
+      KAFKA_ADVERTISE_PORT: '9092'
+      KAFKA_AUTO_CREATE_TOPICS: 'true'
+      KAFKA_DELETE_TOPICS: 'false'
+      KAFKA_LOG_DIRS: /srv/kafka/logs
+      KAFKA_LOG_RETENTION_HOURS: '120'
+      KAFKA_NUM_PARTITIONS: '2'
+      KAFKA_OFFSET_RETENTION_MINUTES: 1440
+      KAFKA_REPLICATION_FACTOR: '3'
+      # Use rancher dns for service discovery
+      KAFKA_ZOOKEEPER_CONNECT: 'zk.zookeeper'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://:9092'
+    volumes:
+      - /srv/kafka/logs:/srv/kafka/logs:rw
+    external_links:
+      - zookeeper/zk:zk
+    tty: true
+    labels:
+      io.rancher.scheduler.affinity:host_label: kafka=1
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
+      io.rancher.container.hostname_override: container_name

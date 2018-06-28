@@ -2,9 +2,9 @@
 
 FROM openjdk:8-jre-alpine
 
-ARG KAFKA_VERSION=0.10.2.1
-ARG KAFKA_MIRROR=http://www-eu.apache.org
-ARG KAFKA_SCALA_VERSION=2.12
+ARG KAFKA_VERSION=1.1.0
+ARG KAFKA_MIRROR=http://www.apache.org
+ARG KAFKA_SCALA_VERSION=2.11
 
 LABEL name="kafka" version=${KAFKA_VERSION}
 
@@ -14,7 +14,7 @@ ADD ./src /
 
 RUN chmod +x /usr/local/sbin/start.sh
 
-RUN apk add --no-cache wget bash
+RUN apk add --no-cache wget bash libressl curl fping libcap
 
 RUN mkdir /opt \
   && wget -q -O - ${KAFKA_MIRROR}/dist//kafka/${KAFKA_VERSION}/kafka_${KAFKA_SCALA_VERSION}-${KAFKA_VERSION}.tgz  | tar -xzf - -C /opt \

@@ -14,19 +14,6 @@ do
   fi
 done
 
-# Check mandatory parameters
-if [ -z "$KAFKA_BROKER_ID" ]; then
-  echo "\$KAFKA_BROKER_ID not set"
-  exit 1
-fi
-echo "KAFKA_BROKER_ID=$KAFKA_BROKER_ID"
-
-if [ -z "$KAFKA_ADVERTISED_HOST_NAME" ]; then
-  echo "\$KAFKA_ADVERTISED_HOST_NAME not set"
-  exit 1
-fi
-echo "KAFKA_ADVERTISED_HOST_NAME=$KAFKA_ADVERTISED_HOST_NAME"
-
 if [ -z "$KAFKA_ZOOKEEPER_CONNECT" ]; then
   echo "\$KAFKA_ZOOKEEPER_CONNECT not set"
   exit 1
@@ -40,6 +27,12 @@ if [ -e "${KAFKA_LOCK_FILE}" ]; then
 fi
 
 export KAFKA_LOG_DIRS=${KAFKA_LOG_DIRS:-/var/lib/kafka}
+
+# Input new line to not break on concat
+echo "" >> $KAFKA_HOME/config/server.properties
+
+# Enable auto broker ids
+sed -i s/^broker\.id=0/#broker\.id=0/g $KAFKA_HOME/config/server.properties
 
 # General config
 for VAR in `env`
