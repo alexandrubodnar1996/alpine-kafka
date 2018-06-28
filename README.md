@@ -14,14 +14,11 @@ The image provides a clusterable Kafka broker.
 
 As a minimum the following environment variables must be set:
 
-1. ```KAFKA_BROKER_ID```
-2. ```KAFKA_ADVERTISED_HOST_NAME```
-3. ```KAFKA_ZOOKEEPER_CONNECT```
+1. ```KAFKA_ZOOKEEPER_CONNECT```
 
-So, assuming your Docker host is ```172.17.8.101```, has [Zookeeper](http://zookeeper.apache.org/) running and should now run Kafka as well, execute the following:
 
 ```
-docker run -d -e KAFKA_BROKER_ID=1 -e KAFKA_ADVERTISED_HOST_NAME=172.17.8.101 -e KAFKA_ZOOKEEPER_CONNECT=172.17.8.101 digitalwonderland/kafka
+docker run -d -e KAFKA_ZOOKEEPER_CONNECT=zk.zookeeper digitalwonderland/kafka
 ```
 
 (if you are looking for a clusterable Zookeeper Docker image, feel free to use [digitalwonderland/zookeeper](https://github.com/digital-wonderland/docker-zookeeper))
